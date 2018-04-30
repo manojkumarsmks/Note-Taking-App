@@ -24,7 +24,11 @@ public class MainActivity extends AppCompatActivity {
                 // Context
                 this,
                 // Simple list of Items
-                android.R.layout.simple_list_item_1,
+               R.layout.single_list_item,
+
+                //  The
+                R.id.label,
+
                 // Source for the list
                 marvelMovies);
 
