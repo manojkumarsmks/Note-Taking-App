@@ -11,6 +11,9 @@ style="width:100px;height:150px;"/>
 #### Stage 2 
 Customized List view
 
+<img src="https://github.com/manojkumarsmks/Note-Taking-App/blob/master/Stage2.png"
+style="width:50px;height:50px;"/>
+
 #### Stage 3
 Sqlite database basics
 
