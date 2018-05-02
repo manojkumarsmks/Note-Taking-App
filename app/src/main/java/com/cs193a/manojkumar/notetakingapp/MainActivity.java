@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         String[] marvelMovies = getResources().getStringArray(R.array.list_view_contect);
 
         //Custom customAdapter = new Custom(marvelMovies);
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), marvelMovies, getLayoutInflater());
+        Custom customAdapter = new Custom(marvelMovies);
 
         listView.setAdapter(customAdapter);
 
