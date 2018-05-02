@@ -15,8 +15,11 @@ public class DBClass {
         public static final String COLUMN_NOTE_DETAILS = "detailsSubHeader";
         public static final String COLUMN_NOTE_DATE = "noteDate";
 
-        public static final String CREATE_TABLE = "CREATE FINAL IF NOT EXISTS " + TABLE_NAME + " (" +
-                _ID +" INTEGER PRIMARY KEY, " + COLUMN_NOTE_HEADER +" TEXT, "+
-                COLUMN_NOTE_DETAILS +" TEXT, " + COLUMN_NOTE_DATE +" TEXT)";
+        public static final String CREATE_TABLE =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        _ID + " INTEGER PRIMARY KEY," +
+                        COLUMN_NOTE_HEADER + " TEXT," +
+                        COLUMN_NOTE_DETAILS + " TEXT" +
+                        COLUMN_NOTE_DATE + " TEXT)";
     }
 }

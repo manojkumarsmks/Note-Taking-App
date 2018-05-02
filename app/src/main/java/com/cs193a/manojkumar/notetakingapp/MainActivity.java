@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,9 +17,10 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     EditText editText;
     TextView dot;
+    Button add;
 
-
-
+    NoteTakingAppDbHelper noteTakingAppDbHelper;
+    public static  final String TAG = "LOG_DEBUG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.simple_list_view);
         editText = (EditText)findViewById(R.id.enter_new_data);
+        add = (Button)findViewById(R.id.add);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
+            }
+        });
 
         // Load the data from the list_view_content to a string array
         String[] marvelMovies = getResources().getStringArray(R.array.list_view_contect);
@@ -34,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         Custom customAdapter = new Custom(marvelMovies);
 
         listView.setAdapter(customAdapter);
-
     }
 
     class Custom extends BaseAdapter {
