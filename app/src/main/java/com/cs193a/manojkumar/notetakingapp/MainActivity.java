@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.single_list_item, null);
             TextView dot = (TextView)convertView.findViewById(R.id.dot);
-            TextView heading = (TextView)convertView.findViewById(R.id.test);
-            TextView subHeading = (TextView)convertView.findViewById(R.id.test2);
+            TextView heading = (TextView)convertView.findViewById(R.id.note_heading);
+            TextView subHeading = (TextView)convertView.findViewById(R.id.note_subheading);
 
             dot.setText(Html.fromHtml("\u2022"));
             heading.setText(marvelMovies[position]);

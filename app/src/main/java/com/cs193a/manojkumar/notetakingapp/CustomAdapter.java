@@ -54,8 +54,8 @@ public class CustomAdapter extends BaseAdapter {
         }
 
         TextView dot = (TextView)v.findViewById(R.id.dot);
-        TextView heading = (TextView)v.findViewById(R.id.test);
-        TextView subHeading = (TextView)v.findViewById(R.id.test2);
+        TextView heading = (TextView)v.findViewById(R.id.note_heading);
+        TextView subHeading = (TextView)v.findViewById(R.id.note_subheading);
 
         dot.setText(Html.fromHtml("\u2022"));
         heading.setText(testingString[position]);
