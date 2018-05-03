@@ -12,12 +12,14 @@ public class CustomDialog extends AppCompatDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Set the builder with new instance
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        // Initialize the inflate
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
         View view = inflater.inflate(R.layout.custom_dialog, null);
 
+        // define the builder
         builder.setView(view)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
