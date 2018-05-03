@@ -1,8 +1,10 @@
 package com.cs193a.manojkumar.notetakingapp;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
+                newNoteTakingDialog();
             }
         });
 
@@ -44,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         Custom customAdapter = new Custom(marvelMovies);
 
         listView.setAdapter(customAdapter);
+    }
+
+    private void newNoteTakingDialog() {
+        CustomDialog dialog = new CustomDialog();
+        dialog.show(getSupportFragmentManager(), "New Note Taking Dialog" );
+
     }
 
     class Custom extends BaseAdapter {
