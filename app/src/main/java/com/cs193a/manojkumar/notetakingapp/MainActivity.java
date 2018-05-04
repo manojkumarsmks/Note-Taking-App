@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog customDialog = new CustomDialog();
-                customDialog.show(getSupportFragmentManager(), null);
+                // Call the custom alert dialog
+                newNoteTakingDialog();
             }
         });
 
