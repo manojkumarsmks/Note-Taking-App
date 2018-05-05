@@ -3,11 +3,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.simple_list_view);
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
+
+        // read the database when the Main activity opensup
+        NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
+        List<Notes>allNotes =  noteTakingAppDbHelper.readFromDatabase(noteTakingAppDbHelper);
+
+        // Testing the data read from database
+        for (int i = 0; i < allNotes.size() ; i++) {
+            Notes notes = allNotes.get(i);
+            Log.d(TAG, "Main Header "+ notes.getHeaderNotes() + " Sub Header "+notes.getSubHeaderNotes() + " Date "+notes.getNotesDate());
+        }
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
