@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -85,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.single_list_item, null);
             TextView dot = (TextView)convertView.findViewById(R.id.dot);
-            TextView heading = (TextView)convertView.findViewById(R.id.note_heading);
-            TextView subHeading = (TextView)convertView.findViewById(R.id.note_subheading);
+            EditText heading = (EditText)convertView.findViewById(R.id.note_heading);
+            EditText subHeading = (EditText) convertView.findViewById(R.id.note_subheading);
 
             dot.setText(Html.fromHtml("\u2022"));
             heading.setText(marvelMovies[position]);
