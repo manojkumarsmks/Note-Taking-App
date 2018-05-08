@@ -33,12 +33,6 @@ public class MainActivity extends AppCompatActivity {
         NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
         List<Notes>allNotes =  noteTakingAppDbHelper.readFromDatabase(noteTakingAppDbHelper);
 
-        // Testing the data read from database
-        for (int i = 0; i < allNotes.size() ; i++) {
-            Notes notes = allNotes.get(i);
-            Log.d(TAG, "Main Header "+ notes.getHeaderNotes() + " Sub Header "+notes.getSubHeaderNotes() + " Date "+notes.getNotesDate());
-        }
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,29 +41,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*// Load the data from the list_view_content to a string array
-        String[] marvelMovies = getResources().getStringArray(R.array.list_view_contect);
-
         //Custom customAdapter = new Custom(marvelMovies);
-        Custom customAdapter = new Custom(marvelMovies);
+        Custom customAdapter = new Custom(allNotes);
 
-        listView.setAdapter(customAdapter);*/
+        listView.setAdapter(customAdapter);
     }
 
     private void newNoteTakingDialog() {
         CustomDialog dialog = new CustomDialog();
         dialog.show(getSupportFragmentManager(), "New Note Taking Dialog" );
-
     }
 
     class Custom extends BaseAdapter {
-        String[] marvelMovies;
-        public Custom(String[] marvelMovies) {
-            this.marvelMovies = marvelMovies;
+        List<Notes> notesFromdb;
+        public Custom(List<Notes> notesFromdb) {
+            this.notesFromdb = notesFromdb;
         }
         @Override
         public int getCount() {
-            return marvelMovies.length;
+            return notesFromdb.size();
         }
 
         @Override
@@ -88,10 +78,12 @@ public class MainActivity extends AppCompatActivity {
             TextView dot = (TextView)convertView.findViewById(R.id.dot);
             EditText heading = (EditText)convertView.findViewById(R.id.note_heading);
             EditText subHeading = (EditText) convertView.findViewById(R.id.note_subheading);
+            //EditText notesDate = (EditText) convertView.findViewById(R.id.note_date);
 
             dot.setText(Html.fromHtml("\u2022"));
-            heading.setText(marvelMovies[position]);
-            subHeading.setText(marvelMovies[position]);
+            heading.setText(notesFromdb.get(position).getHeaderNotes());
+            subHeading.setText(notesFromdb.get(position).getSubHeaderNotes());
+            //notesDate.setText(notesFromdb.get(position).getNotesDate());
             return convertView;
         }
     }
