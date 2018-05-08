@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:id="@+id/note_heading"
+                android:singleLine="true"
                 android:text="My work"/>
 
             <TextView
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/note_subheading"
             android:textSize="16sp"
+            android:maxLines="2"
             android:layout_below="@+id/note_date"
             android:text="My work"/>
     </LinearLayout>
