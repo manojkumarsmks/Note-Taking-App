@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.single_list_item, null);
             TextView dot = (TextView)convertView.findViewById(R.id.dot);
-            EditText heading = (EditText)convertView.findViewById(R.id.note_heading);
-            EditText subHeading = (EditText) convertView.findViewById(R.id.note_subheading);
+            TextView heading = (TextView)convertView.findViewById(R.id.note_heading);
+            TextView subHeading = (TextView) convertView.findViewById(R.id.note_subheading);
             //EditText notesDate = (EditText) convertView.findViewById(R.id.note_date);
 
             dot.setText(Html.fromHtml("\u2022"));
