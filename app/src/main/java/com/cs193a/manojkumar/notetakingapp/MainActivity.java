@@ -153,12 +153,12 @@ public class MainActivity extends AppCompatActivity {
             TextView dot = (TextView)convertView.findViewById(R.id.dot);
             TextView heading = (TextView)convertView.findViewById(R.id.note_heading);
             TextView subHeading = (TextView) convertView.findViewById(R.id.note_subheading);
-            //EditText notesDate = (EditText) convertView.findViewById(R.id.note_date);
+            TextView notesDate = (TextView) convertView.findViewById(R.id.note_date);
 
             dot.setText(Html.fromHtml("\u2022"));
             heading.setText(notesFromdb.get(position).getHeaderNotes());
             subHeading.setText(notesFromdb.get(position).getSubHeaderNotes());
-            //notesDate.setText(notesFromdb.get(position).getNotesDate());
+            notesDate.setText(notesFromdb.get(position).getNotesDate());
             return convertView;
         }
     }

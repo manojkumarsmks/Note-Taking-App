@@ -94,7 +94,7 @@ public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
             // create an instance of the notes
             Notes note = new Notes(mainHeaderNotes, subHeaderNotes, dateNotes);
             // add the instance to the list
-            allNotes.add(note);
+            allNotes.add(0,note);
         }
 
         cursor.close();
