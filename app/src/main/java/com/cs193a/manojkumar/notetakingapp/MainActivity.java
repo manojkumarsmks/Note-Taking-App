@@ -7,14 +7,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,16 +56,34 @@ public class MainActivity extends AppCompatActivity {
                 showContentDialog(customAdapter);
             }
         });
-
-
         listView.setAdapter(customAdapter);
+
+
+        registerForContextMenu(listView);
+
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "At Resume");
-        //customAdapter.notifyDataSetChanged();
+    public void onCreateContextMenu(final ContextMenu contextMenu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(contextMenu, v, menuInfo );
+        if(v.getId() == R.id.simple_list_view) {
+            getMenuInflater().inflate(R.menu.options, contextMenu);
+        }
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete:
+                Toast.makeText(getApplicationContext(), "Deleted your notes", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.edit:
+                Toast.makeText(getApplicationContext(), "Edit your post", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     // Show the Dialog box for the new Note addition
