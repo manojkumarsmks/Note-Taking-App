@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     TextView dot;
     FloatingActionButton floatingActionButton;
-
+    public static Custom customAdapter;
+    private List<Notes> allNotes;
     NoteTakingAppDbHelper noteTakingAppDbHelper;
     public static  final String TAG = "LOG_DEBUG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,25 +39,33 @@ public class MainActivity extends AppCompatActivity {
 
         // read the database when the Main activity opensup
         NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
-        List<Notes>allNotes =  noteTakingAppDbHelper.readFromDatabase(noteTakingAppDbHelper);
+        allNotes =  noteTakingAppDbHelper.readFromDatabase(noteTakingAppDbHelper);
+
+        //Custom customAdapter = new Custom(marvelMovies);
+        customAdapter = new Custom(allNotes);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Call the custom alert dialog
-                showContentDialog();
+                showContentDialog(customAdapter);
             }
         });
 
-        //Custom customAdapter = new Custom(marvelMovies);
-        Custom customAdapter = new Custom(allNotes);
 
         listView.setAdapter(customAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "At Resume");
+        //customAdapter.notifyDataSetChanged();
+    }
 
     // Show the Dialog box for the new Note addition
-    private void showContentDialog() {
+    public void showContentDialog(final Custom customAdapter) {
+
         // Set the builder with new instance
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -89,7 +101,18 @@ public class MainActivity extends AppCompatActivity {
                         NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(MainActivity.this);
 
                         // Calling the function to insert into the database
-                        noteTakingAppDbHelper.insertIntoDatabase(noteTakingAppDbHelper, contentValues);
+                        long newId = noteTakingAppDbHelper.insertIntoDatabase(noteTakingAppDbHelper, contentValues);
+
+                        // Get the notes added newly
+                        Notes notes = noteTakingAppDbHelper.readSpecificColumn(noteTakingAppDbHelper, newId);
+
+                        if(notes != null) {
+                            // Add the new elements to the list 0th position
+                            allNotes.add(0, notes);
+
+                            // Notify the adapter to update
+                            customAdapter.notifyDataSetChanged();
+                        }
 
                     }
                 })
