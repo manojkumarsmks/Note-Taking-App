@@ -103,4 +103,14 @@ public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
         return allNotes;
 
     }
+
+    public int deteleSpecificRow(NoteTakingAppDbHelper noteTakingAppDbHelper, int row) {
+        // Get a readable database reference
+        SQLiteDatabase db = noteTakingAppDbHelper.getReadableDatabase();
+
+        if(db == null)
+            return -1;
+
+        return db.delete(DBClass.NoteTable.TABLE_NAME, _ID + "=" +row,null);
+    }
 }

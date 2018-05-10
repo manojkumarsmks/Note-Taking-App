@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
 
         // read the database when the Main activity opensup
-        NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
+        noteTakingAppDbHelper = new NoteTakingAppDbHelper(getApplicationContext());
         allNotes =  noteTakingAppDbHelper.readFromDatabase(noteTakingAppDbHelper);
 
         //Custom customAdapter = new Custom(marvelMovies);
@@ -59,8 +59,14 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(customAdapter);
 
 
-        registerForContextMenu(listView);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+                return false;
+            }
+        });
+        registerForContextMenu(listView);
     }
 
     @Override
@@ -74,10 +80,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int index = info.position;
+        Log.d(TAG, String.valueOf(index));
         switch (item.getItemId()) {
             case R.id.delete:
+                noteTakingAppDbHelper.deteleSpecificRow(noteTakingAppDbHelper,info.position);
+                allNotes.remove(info.position);
+                customAdapter.notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(), "Deleted your notes", Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.edit:
                 Toast.makeText(getApplicationContext(), "Edit your post", Toast.LENGTH_SHORT).show();
