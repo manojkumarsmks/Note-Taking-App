@@ -9,8 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+
+import static android.provider.BaseColumns._ID;
 
 public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
 
@@ -39,14 +40,40 @@ public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
     }
 
     // Insert a new row to the noteDatabaseTable table
-    public void insertIntoDatabase(NoteTakingAppDbHelper noteTakingAppDbHelper, ContentValues contentValues) {
+    public long insertIntoDatabase(NoteTakingAppDbHelper noteTakingAppDbHelper, ContentValues contentValues) {
         SQLiteDatabase db = noteTakingAppDbHelper.getWritableDatabase();
-        long newRowID = db.insert(DBClass.NoteTable.TABLE_NAME, null, contentValues);
+        return db.insert(DBClass.NoteTable.TABLE_NAME, null, contentValues);
+    }
 
-        Log.d(MainActivity.TAG, "New Row ID is added "+newRowID);
+    public Notes readSpecificColumn(NoteTakingAppDbHelper noteTakingAppDbHelper, long row) {
+        // Get a readable database reference
+        SQLiteDatabase db = noteTakingAppDbHelper.getReadableDatabase();
+
+        String[] column = new String[] {_ID , DBClass.NoteTable.COLUMN_NOTE_HEADER, DBClass.NoteTable.COLUMN_NOTE_DETAILS, DBClass.NoteTable.COLUMN_NOTE_DATE};
+
+        // Query for reading from the specific row
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBClass.NoteTable.TABLE_NAME + " WHERE _ID = ?", new String[]{String.valueOf(row)});
+
+        if(cursor != null) {
+            cursor.moveToFirst();
+
+            // Get the main Header notes, sub header notes and date of the notes separately
+            String mainHeaderNotes = cursor.getString(cursor.getColumnIndexOrThrow(DBClass.NoteTable.COLUMN_NOTE_HEADER));
+            String subHeaderNotes = cursor.getString(cursor.getColumnIndexOrThrow(DBClass.NoteTable.COLUMN_NOTE_DETAILS));
+            String dateNotes = cursor.getString(cursor.getColumnIndexOrThrow(DBClass.NoteTable.COLUMN_NOTE_DATE));
+
+            cursor.close();
+            db.close();
+
+            // Return the notes
+            return new Notes(mainHeaderNotes, subHeaderNotes, dateNotes);
+        }
+
+        return null;
     }
 
 
+    // Read the complete database
     public List<Notes> readFromDatabase(NoteTakingAppDbHelper noteTakingAppDbHelper){
         // Get a readable database reference
         SQLiteDatabase db = noteTakingAppDbHelper.getReadableDatabase();
@@ -71,6 +98,7 @@ public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        db.close();
         // return the notes
         return allNotes;
 
