@@ -113,4 +113,25 @@ public class NoteTakingAppDbHelper extends SQLiteOpenHelper {
 
         return db.delete(DBClass.NoteTable.TABLE_NAME, _ID + "=" +row,null);
     }
+
+
+    public int updateSpecificRow(NoteTakingAppDbHelper noteTakingAppDbHelper, int row, ContentValues contentValues) {
+        SQLiteDatabase db = noteTakingAppDbHelper.getWritableDatabase();
+        if(db == null)
+            return row;
+
+        return db.update(DBClass.NoteTable.TABLE_NAME, contentValues, _ID+ "= "+  row, null);
+    }
+
+    public int getRowCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT *  FROM "+DBClass.NoteTable.TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        Log.d(MainActivity.TAG, count +" Count");
+        cursor.close();
+
+        return count;
+    }
 }

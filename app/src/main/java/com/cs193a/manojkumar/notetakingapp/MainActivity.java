@@ -53,19 +53,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Call the custom alert dialog
-                showContentDialog(customAdapter);
+                showContentDialog(customAdapter, false, -1);
             }
         });
         listView.setAdapter(customAdapter);
 
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                return false;
-            }
-        });
         registerForContextMenu(listView);
     }
 
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int index = info.position;
-        Log.d(TAG, String.valueOf(index));
+        Log.d(TAG, " Clicked elemetn is " +String.valueOf(index));
         switch (item.getItemId()) {
             case R.id.delete:
                 noteTakingAppDbHelper.deteleSpecificRow(noteTakingAppDbHelper,info.position);
@@ -91,14 +83,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Deleted your notes", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.edit:
-                Toast.makeText(getApplicationContext(), "Edit your post", Toast.LENGTH_SHORT).show();
+                showContentDialog(customAdapter, true, info.position);
+                customAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "Edit your post "+(info.position), Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onContextItemSelected(item);
     }
 
     // Show the Dialog box for the new Note addition
-    public void showContentDialog(final Custom customAdapter) {
+    public void showContentDialog(final Custom customAdapter, boolean toEdit, final int row) {
 
         // Set the builder with new instance
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -111,46 +105,92 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setView(view);
 
+        if(toEdit) {
+            // Get the notes added newly
+            Notes notes = noteTakingAppDbHelper.readSpecificColumn(noteTakingAppDbHelper, noteTakingAppDbHelper.getRowCount()-row);
+            // Set the views and values
+            final EditText header = (EditText)view.findViewById(R.id.main_notes);
+            final EditText details = (EditText)view.findViewById(R.id.details_notes);
 
-        // define the builder
-        builder.setView(view)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Initialize the views in custom alert dialog
-                        EditText main_header_note = (EditText)view.findViewById(R.id.main_notes);
-                        EditText details_note = (EditText)view.findViewById(R.id.details_notes);
+            header.setText(notes.getHeaderNotes());
+            details.setText(notes.getSubHeaderNotes());
 
-                        // Content values initalizer for the database
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(DBClass.NoteTable.COLUMN_NOTE_HEADER, main_header_note.getText().toString());
-                        contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DETAILS, details_note.getText().toString());
-                        contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DATE, getTodaysDate());
-                        NoteTakingAppDbHelper noteTakingAppDbHelper = new NoteTakingAppDbHelper(MainActivity.this);
+            builder.setView(view).
+                    setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        // Calling the function to insert into the database
-                        long newId = noteTakingAppDbHelper.insertIntoDatabase(noteTakingAppDbHelper, contentValues);
-
-                        // Get the notes added newly
-                        Notes notes = noteTakingAppDbHelper.readSpecificColumn(noteTakingAppDbHelper, newId);
-
-                        if(notes != null) {
-                            // Add the new elements to the list 0th position
-                            allNotes.add(0, notes);
-
-                            // Notify the adapter to update
-                            customAdapter.notifyDataSetChanged();
                         }
+                    })
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .show();
+                            // Initialize the views in custom alert dialog
+                            EditText main_header_note = (EditText) view.findViewById(R.id.main_notes);
+                            EditText details_note = (EditText) view.findViewById(R.id.details_notes);
+
+                            // Content values initalizer for the database
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_HEADER, main_header_note.getText().toString());
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DETAILS, details_note.getText().toString());
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DATE, getTodaysDate());
+
+                            Notes notes = new Notes(main_header_note.getText().toString(),
+                                    details_note.getText().toString(),
+                                    getTodaysDate());
+
+                            int result = noteTakingAppDbHelper.updateSpecificRow(noteTakingAppDbHelper, noteTakingAppDbHelper.getRowCount() - row, contentValues);
+                            if(result == 1){
+                                allNotes.set(row, notes);
+                                customAdapter.notifyDataSetChanged();
+                            }
+                            Log.d(TAG, "return type of database "+String.valueOf(result));
+                        }
+                    })
+                    .show();
+        }
+
+        else {
+            // define the builder
+            builder.setView(view)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Initialize the views in custom alert dialog
+                            EditText main_header_note = (EditText) view.findViewById(R.id.main_notes);
+                            EditText details_note = (EditText) view.findViewById(R.id.details_notes);
+
+                            // Content values initalizer for the database
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_HEADER, main_header_note.getText().toString());
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DETAILS, details_note.getText().toString());
+                            contentValues.put(DBClass.NoteTable.COLUMN_NOTE_DATE, getTodaysDate());
+
+                            // Calling the function to insert into the database
+                            long newId = noteTakingAppDbHelper.insertIntoDatabase(noteTakingAppDbHelper, contentValues);
+                            Log.d(TAG, "ID is " +newId);
+                            // Get the notes added newly
+                            Notes notes = noteTakingAppDbHelper.readSpecificColumn(noteTakingAppDbHelper, newId);
+
+                            if (notes != null) {
+                                // Add the new elements to the list 0th position
+                                allNotes.add(0, notes);
+
+                                // Notify the adapter to update
+                                customAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     /*Get todays data
