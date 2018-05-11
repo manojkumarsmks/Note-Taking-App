@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.edit:
                 showContentDialog(customAdapter, true, info.position);
                 customAdapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "Edit your post "+(info.position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Edit your notes", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onContextItemSelected(item);
