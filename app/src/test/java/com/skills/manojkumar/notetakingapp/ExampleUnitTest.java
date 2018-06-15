@@ -1,4 +1,4 @@
-package com.cs193a.manojkumar.notetakingapp;
+package com.skills.manojkumar.notetakingapp;
 
 import org.junit.Test;
 

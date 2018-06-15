@@ -1,69 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:paddingBottom="16dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="16dp">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bullet_point">
-        <TextView
-            android:id="@+id/dot"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:drawableRight="@drawable/bullet_point"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:includeFontPadding="false"
-            android:textColor="@color/colorAccent"
-            android:lineSpacingExtra="0dp"
-            android:textSize="40sp" />
-    </LinearLayout>
-
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:layout_toRightOf="@+id/bullet_point">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/colorPrimary"
-                android:id="@+id/note_heading"
-                android:singleLine="true"
-                android:text="My work"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/note_date"
-                android:layout_alignParentEnd="true"
-                android:paddingRight="10dp"
-                android:textSize="12sp"
-                android:text="Mar 24"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
+        android:paddingLeft="10dp">
 
         <TextView
+            android:id="@+id/country_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/note_subheading"
-            android:textSize="16sp"
-            android:maxLines="2"
+            android:singleLine="true"
+            android:text="My work"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@+id/note_date"
-            android:text="My work"/>
+            android:textSize="24sp" />
     </LinearLayout>
 
 

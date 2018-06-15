@@ -1,4 +1,4 @@
-package com.cs193a.manojkumar.notetakingapp;
+package com.skills.manojkumar.notetakingapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
